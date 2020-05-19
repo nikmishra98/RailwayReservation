@@ -1,0 +1,122 @@
+@startuml
+entity account
+{
+    - acc_no (pk)
+    - acc_status (fk)
+    - acc_type (fk)
+    ---
+    - acc_holder_name
+    - acc_type
+    - acc-bal
+    - open_date
+    - acc_status
+    - loans
+ }
+ 
+entity acc_type
+{
+    - type_id (pk)
+    ---
+    - acc_type
+ }
+ 
+entity acc_status
+{
+    - status_id (pk)
+    ---
+    - acc_type
+ }
+ 
+ entity acc_holder
+{
+    - detail_id (pk)
+    - account_no (fk)
+    ---
+    - name
+    - address
+    - mobile_no
+    - email
+ }
+    
+entity users
+{
+    - user_id (pk)
+    ---
+    - user_name
+    - user email
+    - user password
+ }
+
+entity transaction
+{
+    - trans_id (pk)
+    - acc_no(fk)
+    - trans_type(fk)
+    ---
+    - amount
+    - date
+ }
+
+entity trans_type
+{
+    - type_id (pk)
+    ---
+    - trans_type
+ }
+ 
+ entity accountStatement
+{
+    - id (pk)
+    - acc_no(fk)
+    - trans_id(fk)
+    ---
+ }
+ 
+  entity loan
+{
+    - loan_id (pk)
+    - acc_no(fk)
+    ---
+    - loan_acc_no
+    - loan_amout 
+    - loan_type (fk)
+    - loan_status (fk)
+  }
+ 
+  entity loan_type
+{
+    - type_id (pk)
+    ---
+    - loan_type
+ }
+ 
+   entity loan_status
+{
+    - status_id (pk)
+    ---
+    - loan_status
+ }
+ 
+   entity bankService
+{
+    - service_id (pk)
+    ---
+    - service
+ }
+ 
+ loan_type --{ loan
+ loan_status --{ loan
+ 
+ account -- loan
+ account --{ transaction
+ 
+ acc_holder --{ account
+ acc_type --{ account
+ acc_status --{ account
+ 
+ trans_type --{ transaction
+ 
+ accountStatement -- account
+ accountStatement --{ transaction
+ 
+ @enduml

@@ -1,0 +1,138 @@
+ALTER TABLE account
+DROP FOREIGN KEY FK_DEPT_EMP_DEPTNO;
+
+ALTER TABLE account   
+DROP CONSTRAINT type_id; 
+
+SELECT foreign keycreate table bankservice(service_id int PRIMARY KEY AUTO_INCREMENT, service varchar(200));
+
+FROM account
+WHERE TABLE_NAME =  'account'
+AND COLUMN_NAME =  'type_id'
+
+ create table acc_type(type_id int  PRIMARY KEY AUTO_INCREMENT, acc_type VARCHAR(100));
+
+
+create table acc_status(status_id int  PRIMARY KEY AUTO_INCREMENT, acc_status VARCHAR(100));
+
+create table acc_holder(acc_id int PRIMARY KEY AUTO_INCREMENT, acc_no INT,name varchar(200), address VARCHAR(200), mob_no BIGINT, email VARCHAR(100));
+
+create table bankservice(service_id int PRIMARY KEY AUTO_INCREMENT, service varchar(200));
+ create table loan_status(status_id int PRIMARY KEY AUTO_INCREMENT, loan_statust varchar(200);
+
+create table loan_status(status_id int PRIMARY KEY AUTO_INCREMENT, loan_status varchar(200));
+
+
+create table user(user_id int PRIMARY KEY AUTO_INCREMENT, user_name varchar(200), user_email varchar(100), user_password varchar(200));
+
+
+ create table trans_type(type_id int PRIMARY KEY AUTO_INCREMENT, tran_type varchar(200));                           
+
+
+create table transaction(trans_id int PRIMARY KEY AUTO_INCREMENT, acc_no int, trans_type int, trans_amount double, trans_date date);
+
+
+create table acc_statement(entry_no int primary key auto_increment, acc_no int, trans_id int );   
+
+
+insert into account values(1,12120101,'Manoj Panchakshari', 1, 15000, '2019-06-12', 2, NULL);
+insert into account values(2,12120102,'Pratik Jain', 1, 18000, '2018-05-10', 1, NULL);
+insert into account values(3,12120103,'Brijesh Sonawane', 2, 50000, '2019-04-11', 1, NULL);
+insert into account values(4,12120104,'Rudra Joshi', 1, 60000, '2015-06-11', 1, NULL);
+insert into account values(5,12120105,'Piyush Soney', 2, 40000, '2015-06-11', 1, NULL);
+
+insert into acc_type (acc_type) value ('Saving');
+insert into acc_type (acc_type) value ('Current');
+
+
+insert into acc_status (acc_status) value ('Active');
+insert into acc_status (acc_status) value ('Inactive');
+
+
+
+
+insert into acc_holder (acc_no, name, address, mob_no, email) values(12120101,'Manoj Panchakshari','Nashik', 7755440298, 'manoj@gmail.com');
+insert into acc_holder (acc_no, name, address, mob_no, email) values(12120102,'Pratik Jain','Pune', 9658741230, 'pratik@gmail.com');
+insert into acc_holder (acc_no, name, address, mob_no, email) values(12120103,'Brijesh Sonawane','Pune', 8569741230, 'brijesh@gmail.com');  
+insert into acc_holder (acc_no, name, address, mob_no, email) values(12120104,'Rudra Joshi','Sangamner', 7584963210, 'rudi@gmail.com');  
+insert into acc_holder (acc_no, name, address, mob_no, email) values(12120105,'Piyush Soney','Mumbai', 9574861230, 'piyush@gmail.com');
+
+insert into user (user_name,user_email,user_password) values('Vaibhav Ghotekar', 'vaibhav@gmail.com', 'vaibhav#123');
+insert into user (user_name,user_email,user_password) values('Yash Deole', 'yash@gmail.com', 'yash#123');
+
+ insert into bankservice (service) value('Fund Transfer');
+insert into trans_type (tran_type) value ('Withdraw');
+insert into trans_type (tran_type) value (Deposit);
+insert into trans_type (tran_type) value ('Transfer');
+
+insert into transaction (acc_no, trans_type, trans_amount, trans_date) values(12120102, 1, 1000, '2019-06-05');
+insert into transaction (acc_no, trans_type, trans_amount, trans_date) values(12120102, 2, 3400, '2019-06-08');
+insert into transaction (acc_no, trans_type, trans_amount, trans_date) values(12120101, 1, 4500, '2019-07-15');
+
+insert into transaction (acc_no, trans_type, trans_amount, trans_date) values(12120104, 2, 5500, '2019-07-15');
+
+insert into transaction (acc_no, trans_type, trans_amount, trans_date) values(12120103, 2, 2200012, '2018-03-28');
+
+insert into acc_statement(acc_no, trans_id) values(12120102,1);
+insert into acc_statement(acc_no, trans_id) values(12120102,2);
+insert into acc_statement(acc_no, trans_id) values(12120101, 3);
+
+insert into acc_statement(acc_no, trans_id) values(12120102,4);
+
+insert into acc_statement(acc_no, trans_id) values(12120103, 5);
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

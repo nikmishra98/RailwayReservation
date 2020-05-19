@@ -1,0 +1,136 @@
+EXPRESS
+
+
+
+router.get('/:id',(request,response)=>{
+    const id=request.params.id
+    const connection=db.connect()
+    const statement=`select * from doctor where doctor_id='${id}'`
+    connection.query(statement,(error,data)=>{
+        connection.end()
+        response.send(utils.createResult(error,data))
+    })
+})
+
+
+router.put('/:id',(request,response)=>{
+    const id=request.params.id
+    const name=request.body.doctor_name
+    const description=request.body.doctor_description
+    const start=request.body.schedule_start
+    const end=request.body.schedule_end
+
+    const connection=db.connect()
+    const statement=`update doctor set doctor_name='${name}',doctor_description='${description}',schedule_start='${start}',schedule_end='${end}' where doctor_id=${id}`
+    connection.query(statement,(error,data)=>{
+        connection.end()
+        response.send(utils.createResult(error,data))
+    })
+})
+
+
+TS
+
+import { Component, OnInit } from '@angular/core';
+import { DoctorService } from '../doctor.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { runInThisContext } from 'vm';
+
+@Component({
+    selector: 'doctor-update',
+    templateUrl: './doctor.update.component.html',
+    styleUrls : ['./doctor.update.component.css']
+})
+
+export class DoctorUpdateComponent implements OnInit {
+    doctor_name=''
+    doctor_description=''
+    schedule_start=''
+    schedule_end=''
+    id=0
+    constructor(
+        private router:Router,
+        private route:ActivatedRoute,
+        private service:DoctorService) { 
+            console.log(this.route.snapshot.params)
+             this.id=this.route.snapshot.params['doctor_id']
+            if(this.id){
+                this.service.getDoctorDetail(this.id)
+                .subscribe(response=>{
+                    if(response['status']=='success')
+                    {
+                        console.log(response['data'])
+                        const doctor=response['data']
+                        this.doctor_name=doctor[0].doctor_name
+                        this.doctor_description=doctor[0].doctor_description
+                        this.schedule_start=response['schedule_start']
+                        this.schedule_end=response['schedule_end']
+                    }else{
+                        console.log(response['error'])
+                    }
+                })
+            }
+        }
+updateDoct()
+{
+    this.service.updateDoc(this.doctor_name,this.doctor_description,this.schedule_start,this.schedule_end,this.id)
+    .subscribe(response=>{
+        if(response['status']=='success')
+        {
+            alert('updated')
+        }else{
+            console.log(response['error'])
+        }
+    })
+}
+updateCancel()
+{
+    this.router.navigate(['/doctor-list'])
+}
+    ngOnInit() { }
+}
+
+service
+
+ getDoctorDetail(id: number) {
+        return this.http.get(this.url+'/'+id)
+    }
+
+ updateDoc(doctor_name:string,doctor_description:string,schedule_start:string,schedule_end:string,id:number)
+    {
+        const body={
+            doctor_name:doctor_name, 
+            doctor_description:doctor_description ,
+            schedule_start:schedule_start,
+            schedule_end:schedule_end
+            }
+            return this.http.put(this.url+'/'+id,body)
+    }
+
+HTML
+
+<div class="container">
+    <h1>Update doctor</h1>
+    <div class="form">
+        <div class="form-group">
+            <label for="">Name</label>
+            <input [(ngModel)]="doctor_name" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">Name</label>
+            <textarea [(ngModel)]="doctor_description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="">Start time</label>
+            <input [(ngModel)]="schedule_start" type="time" value="00:00:00" step="1" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">End time</label>
+            <input [(ngModel)]="schedule_end" type="time" value="00:00:00" step="1" class="form-control">
+        </div>
+        <div class="form-group">
+            <button (click)="updateDoct()" class="btn btn-success">Update</button>
+            <button (click)="updateCancel()" class="btn btn-danger">Cancel</button>
+        </div>
+    </div>
+</div>

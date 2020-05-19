@@ -1,0 +1,86 @@
+@startuml
+entity Admin{
+-AdminID (PK) : integer
+-Reservation no. (FK) : integer
+---
+-Name(NOT NULL) : varchar
+-Email(UNIQUE, NOT NULL) : varchar
+-Password(NOT NULL) : varchar
+-Mobile no. : integer
+-Transaction Status(UNIQUE) : varchar
+}
+
+entity Train{
+-Train no. (PK) : integer
+-Zone Code (FK) : integr
+---
+-Train name(NOT NULL) : varchar
+-No. of coaches(NOT NULL) : integer
+-Source (NOT NULL) : varchar
+-Destination (NOT NULL) : varchar
+-Duration(NOT NULL) : integer
+}
+
+entity Reservation{
+-Reservation no.(PK) : integer
+-Ticket no. (UNIQUE, NOT NULL) : integer
+-Train no. (FK) : integer
+---
+-Pass Check (NOT NULL) : varchar
+-Nationality (NOT NULL) : varchar
+-Ticket Booking Time (NOT NULL) : varchar
+}
+
+entity Zone{
+-Zone Code(PK) : integer
+---
+-Zone name(NOT NULL) : varchar
+-Length of Zone(NOT NULL) : integer
+}
+
+entity Passenger{
+-PNR_No(FK) : integer
+---
+-Passenger name(NOT NULL) : varchar
+-Age(NOT NULL) : integer
+-Gender : char
+-Email(NOT NULL) : varchar
+- Mobile no.(NOT NULL) : integer
+-Address : varchar
+-TransactionID(FK) : integer
+}
+
+entity Payment{
+-TransactionID(PK) : integer
+---
+-Payment_Mode(NOT NULL) : varchar
+}
+
+entity Ticket{
+-PNR_No(PK) : integer
+-Reservation no. (FK) : integer
+---
+-Ticket no. (UNIQUE, NOT NULL) : integer
+-No. of seats(NOT NULL) : integer
+-Ticket Status : varchar
+-Source Departure Time (NOT NULL) : varchar
+-Destination Arrival Time (NOT NULL) : varchar
+}
+
+entity Coach{
+-Coach no.(NOT NULL) : integer
+---
+-Coach name(NOT NULL) : varchar
+-Capacity(NOT NULL) : integer
+}
+
+Admin -- Reservation
+Admin --{ Train
+Admin --{ Zone
+Ticket -- Reservation
+Train --{ Passenger
+Train --{ Coach
+Passenger --{ Ticket
+Passenger -- Payment
+Train -- Zone
+@enduml

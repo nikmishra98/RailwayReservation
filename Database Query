@@ -1,0 +1,122 @@
+New User:- mysql -u Rail_Reservation -prail_reservation
+
+create table Admin(
+AdminID integer primary key auto_increment,
+First_Name varchar(100) not null,
+Last_Name varchar(100) not null,
+Age integer not null,
+Gender varchar(10),
+Email varchar(100) unique not null,
+Password varchar(50) not null,
+MobileNumber varchar(50),
+Address varchar(100)
+);
+
+create table Train(
+Train_no integer primary key,
+Train_name varchar(100) not null,
+No_of_coaches integer not null,
+Source varchar(100) not null,
+Destination varchar(100) not null,
+Duration integer not null
+);
+
+create table Ticket(
+PNR_No varchar(100) primary key,
+Ticket_no integer unique not null,
+No_of_seats integer not null,
+Source_Departure_Time varchar(100) not null,
+Destination_Arrival_Time varchar(100) not null,
+Fare integer,
+Coach_name varchar(100)
+);
+
+create table Zone(
+Zone_code varchar(100) primary key,
+Zone_name varchar(100) not null,
+Length_of_zone integer not null
+);
+
+create table Passenger(
+PNR_No varchar(100),
+Passenger_name varchar(100) not null,
+Age integer not null,
+Gender varchar(10),
+Email varchar(100) unique not null,
+Mobile_no integer not null,
+Address varchar(200),
+Transaction_ID integer,
+constraint fk_PNR_No_Passenger foreign key(PNR_No) references Ticket(PNR_No),
+constraint fk_Transaction_ID_Passenger foreign key(Transaction_ID) references Payment(Transaction_ID)
+);
+
+create table Payment(
+Transaction_ID integer primary key,
+Payment_Mode varchar(50) not null
+);
+
+create table Coach(
+Coach_no integer not null,
+Coach_name varchar(50) not null,
+Capacity integer 
+);
+
+create table Reservation(
+Reservation_no integer primary key,    
+Train_no integer,
+Pass_Check varchar(50) not null,
+Nationality varchar(50) not null,
+Ticket_Booking_Time varchar(50) not null,
+constraint fk_Train_No_Reservation foreign key(Train_no) references Train(Train_no)
+);
+
+create table Stations(
+stationID integer primary key auto_increment,
+stationCode varchar(200),
+stationName varchar(500),
+location varchar(500),
+zone varchar(200),
+foreign key (zone) references Zone(Zone_code),
+trainsPassingThrough integer
+);
+
+create table Seats(No_of_seats integer);
+
+alter table Admin add column Reservation_no integer;
+
+alter table Admin add constraint fk_Reservation_No_Admin foreign key(Reservation_no) references Reservation(Reservation_no);
+
+insert into Admin (First_Name,Last_Name,Age,Gender,Email,Password,MobileNumber,Address) values('Abhilasha','Verma',23,'Female','abhilasha97verma@gmail.com','abhilasha123','+919523467012','Pune');
+insert into Admin (First_Name,Last_Name,Age,Gender,Email,Password,MobileNumber,Address) values('Manish','Patil',28,'Male','manishpatil@gmail.com','manish456','+919634578123','Mumbai');
+insert into Admin (First_Name,Last_Name,Age,Gender,Email,Password,MobileNumber,Address) values('Jitesh','Sonar',30,'Male','jiteshsonar100@gmail.com','jitesh789','+919736689234','Delhi');
+insert into Admin (First_Name,Last_Name,Age,Gender,Email,Password,MobileNumber,Address) values('Nidhi','Sharma',25,'Female','nidhisharma122@gmail.com','nidhi852','+919877908345','Bangalore');
+
+insert into Train (Train_no,Train_name,No_of_coaches,Source,Destination,Duration) values (12301,'Rajdhani Express',6,'Howrah Jn','New Delhi',17);
+insert into Train (Train_no,Train_name,No_of_coaches,Source,Destination,Duration) values (12655,'Navjeevan Express',5,'Ahmedabad Jn','Chennai Central',20);
+insert into Train (Train_no,Train_name,No_of_coaches,Source,Destination,Duration) values (11056,'Godan Express',6,'Gorakhpur Jn','Lokmanyatilak Terminal',18);
+insert into Train (Train_no,Train_name,No_of_coaches,Source,Destination,Duration) values (22511,'Karmabhoomi Express',4,'Lokmanyatilak Terminal','Kamakhya',20);
+
+insert into Reservation (Reservation_no,Train_no,Pass_Check,Nationality,Ticket_Booking_Time) values (110,11056,'Pass Member','Indian','10:20:00 AM');
+
+insert into Passenger(PNR_No,Passenger_name,Age,Gender,Email,Mobile_no,Address,Transaction_ID) values ('442-8324463','Sejal Joshi',25,'Female','sejal.joshi@gmail.com','+919826246615','Hyderabad',953174);
+insert into Passenger(PNR_No,Passenger_name,Age,Gender,Email,Mobile_no,Address,Transaction_ID) values ('421-4476123','Hemant Jadhav',26,'Male','hemantjadhav@gmail.com','+91982004561','Bangalore',102659);
+insert into Passenger(PNR_No,Passenger_name,Age,Gender,Email,Mobile_no,Address,Transaction_ID) values ('834-6074129','Shital Pawar',22,'Female','shital.pawar@gmail.com','+918834446615','Pune',325697);
+insert into Passenger(PNR_No,Passenger_name,Age,Gender,Email,Mobile_no,Address,Transaction_ID) values ('415-0264045','Sachin Patil',27,'Male','sachinpatil06@gmail.com','+919800146689','Mumbai',416996);
+
+insert into Ticket(Source,Destination,Coach_name,Coach_code,Train_no,Train_name) values("Pune","Bhusawal","AC Three Tier","B2",12120,"Hutaatma");
+
+insert into Stations(stationCode,stationName,location,zone,trainsPassingThrough)values("ANDI","Adrsh Ngr Delhi","Delhi","NR",5),("ADI","Ahmedabad Junction","Ahemdabad","WR",10),("SBC","Bangalore Cy Junction","Bangalore","SWR",23),("SC","Secunderabad Junction","Hyderabad","SCR",13),("BSL","Bhusaval Junction","Bhusaval Junction","CR",30),("BPL","Bhopal Junction","Bhopal Junction","WCR",16),("ALD","Allahabad Junction","Allahabad","NCR",49),("CP","Kolkata","Kolkata","ER",16);
+
+insert into Zone values("CR","Central Railway",3905),("NR","Northern Railway",6968),("NER","North Eastern Railway",3667),("NFR","Northeast Frontier Railway",3948),("ER","Eastern Railway",2414),("SER","South Eastern Railway",2631),("SCR","South Central Railway",3127),("SR","Southern Railway",5079),("WR","Western Railway",6182),("SWR","South Western Railway",3177),("NWR","North Western Railway",5459),("WCR","West Central Railway",2965),("NCR","North Central Railway",3151),("SECR","South East Central Railway",2447),("ECoR","East Coast Railway",2204),("ECR","East Central Railway",3628),("SCoR","South Coast Railway",3496);
+
+
+insert into Coach(Position_from_Engine,Coach_no,Coach_code,Coach_type,Capacity_by_Passenger) values(4,"A1","AC2","AC Two Tier",50);
+
+
++--------------+-----------+-------------+-----------------------+--------------------------+------+-------------+----------+----------+
+| PNR_No       | Ticket_no | No_of_seats | Source_Departure_Time | Destination_Arrival_Time | Fare | Coach_name  | Train_no | Coach_no |
++--------------+-----------+-------------+-----------------------+--------------------------+------+-------------+----------+----------+
+| 110-89562644 |        13 |           4 | 20:12:00 PM           | 05:45:02 PM              | 1800 | AC Two Tier |    12655 | A1       |
+| 154-2359895  |        14 |           2 | 08:00:00 AM           | 05:45:02 PM              |  525 | Sleeper     |    12120 | S2       |
+| 450-5624454  |        15 |           5 | 23:15:00 PM           | 08:45:02 AM              |  400 | General     |    12628 | GD2      |
++--------------+-----------+-------------+-----------------------+--------------------------+------+-------------+----------+----------+
